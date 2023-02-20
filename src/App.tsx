@@ -13,8 +13,8 @@ const App : React.FC = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
-    getCharacters(1);
-    }, []);
+    getCharacters(currentPage);
+    }, [currentPage]);
 
   const getCharacters = async (pageNumber : number) => {
 
