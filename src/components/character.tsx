@@ -46,8 +46,10 @@ const Character : React.FC<CharacterProps> = ( { character,
 
       <div className="character-item__actions"
        onClick={()=>
-        toggleFavoriteForCharacter(character._id)}>
-        Add to Favourites
+        toggleFavoriteForCharacter(character._id)}> {
+          !characterFavorites.includes(character._id)?
+          "Add to Favourites" : "Favorited"
+        }  
       </div>
 
       <img className="character-item__img" src={character.imageUrl} alt={character.name} />
