@@ -1,8 +1,17 @@
 import { DisneyCharacter } from "../disney_character"
 
+interface CharacterProps {
+  character: DisneyCharacter;
+  characterFavorites: Array<number>;
+  updateFavorites: (favorites: Array<number>)=> void;
+
+}
+
 // for our props we can reuse the DisneyCharacter interface
 // - defining an anonymous type that just has one property - a DisneyCharacter
-const Character : React.FC<{ character: DisneyCharacter}> = ( { character } ) => {
+const Character : React.FC<CharacterProps> = ( { character,
+                                                   characterFavorites,
+                                                   updateFavorites } ) => {
   
   let imageSrc = "https://picsum.photos/300/200/?blur";   
 
@@ -25,6 +34,4 @@ const Character : React.FC<{ character: DisneyCharacter}> = ( { character } ) =>
 
 }  
   
-
-
 export default Character

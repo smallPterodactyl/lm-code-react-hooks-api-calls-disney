@@ -12,6 +12,8 @@ const App : React.FC = () => {
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
+  const [characterFavourites, setCharacterFavourites] = useState<number[]>([]);
+
   useEffect(() => {
     getCharacters(currentPage);
     }, [currentPage]);
@@ -27,20 +29,19 @@ const App : React.FC = () => {
 
   };
 
-
-  
-  
-
- 
-  
-
   return (
+    
     <div className="page">
       <Header currentPage={currentPage} />
       <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <CharacterContainer characters={characters} />
-    </div>
+      <CharacterContainer characters={characters}
+                          characterFavorites={characterFavourites}
+                          updateFavorites={setCharacterFavourites}  
+        />
+     </div>
   );
-}
+
+}  
+ 
 
 export default App;
