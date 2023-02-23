@@ -1,39 +1,36 @@
 import { DisneyCharacter } from "../disney_character"
+import React, { useContext } from 'react';
+import { FavoritesContext, FavoritesContextType} from '../App';
+
 
 interface CharacterProps {
   character: DisneyCharacter;
-  characterFavorites: Array<number>;
-  updateFavorites: (favorites: Array<number>)=> void;
-
 }
 
-// for our props we can reuse the DisneyCharacter interface
-// - defining an anonymous type that just has one property - a DisneyCharacter
-const Character : React.FC<CharacterProps> = ( { character,
-                                                  characterFavorites,
-                                                  updateFavorites } ) => {
+const Character : React.FC<CharacterProps> = ( { character } ) => {
 
-                                                    
-  
+  const favoritesContext = React.useContext (FavoritesContext);
+
+
+  //set default image if none                                                
   let imageSrc = "https://picsum.photos/300/200/?blur";   
-
   if (character.imageUrl) {imageSrc = character.imageUrl};
 
-  function toggleFavoriteForCharacter (characterID: number) {
+    function toggleFavoriteForCharacter (characterID: number) {
 
-    let updatedFavorites : Array<number> = [];
+      let updatedFavorites : Array<number> = [];
 
-    //add a new favorite
-    if (!characterFavorites.includes(characterID)) {
-      updateFavorites ([...characterFavorites,characterID]);
-    }
+      //add a new favorite
+      if (!favoritesContext?.characterFavorites.includes(characterID)) {
+        favoritesContext?.setCharacterFavorites ([...favoritesContext.characterFavorites,characterID]);
+      }
 
     //filter out a removed favorite
     else {
       updatedFavorites = 
-      characterFavorites.filter((id) => id !== characterID);
+      favoritesContext?.characterFavorites.filter((id) => id !== characterID);
 
-      updateFavorites(updatedFavorites);
+      favoritesContext?.setCharacterFavorites(updatedFavorites);
     }  
       
   } 
@@ -47,7 +44,7 @@ const Character : React.FC<CharacterProps> = ( { character,
       <div className="character-item__actions"
        onClick={()=>
         toggleFavoriteForCharacter(character._id)}> {
-          !characterFavorites.includes(character._id)?
+          !favoritesContext?.characterFavorites.includes(character._id)?
           "Add to Favourites" : "Favorited"
         }  
       </div>
