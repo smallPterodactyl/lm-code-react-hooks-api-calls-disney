@@ -1,11 +1,17 @@
 
-// our props have two properties - a number, and a function that takes a number and returns void
-// we can define this as an interface, or anonymously like this:
-const Navigation : React.FC<{ currentPage: number, setCurrentPage: (page: number) => void }> 
+import React, { useState,useEffect } from 'react';
+
+const Navigation : React.FC< { currentPage: number, setCurrentPage: (page: number) => void } > 
 	= ({ currentPage, setCurrentPage }) => 
 	{
 
-    const nextPage = () => {
+        let [changeText, setChangeText] = useState(true);
+
+        const toggleButton = () => {
+            return setChangeText(!changeText);
+        };
+    
+        const nextPage = () => {
         const newPageNumber = currentPage + 1;
         setCurrentPage(newPageNumber);
     }
@@ -14,7 +20,8 @@ const Navigation : React.FC<{ currentPage: number, setCurrentPage: (page: number
         if (currentPage > 1) {
             const newPageNumber = currentPage - 1;
             setCurrentPage(newPageNumber);
-        }
+        }   
+
     }
 
     return (
@@ -23,7 +30,8 @@ const Navigation : React.FC<{ currentPage: number, setCurrentPage: (page: number
                 <button className="navigation__button" onClick={prevPage}>Prev Page</button>
             </div>
             <div className="navigation__item">
-                <button className="navigation__button" onClick={prevPage}>Show Favourites</button>
+                <button className="navigation__button" onClick={() => toggleButton()}>
+                {changeText ? "Show Favorites" : "Show All"}</button>
             </div>
             <div className="navigation__item">
                 <button className="navigation__button" onClick={nextPage}>Next Page</button>
