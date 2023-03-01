@@ -16,7 +16,7 @@ const CharacterContainer : React.FC<CharacterContainerProps> = ( {  characters }
         
 		characters.forEach((character, index) => {
             cols.push(<Character key={character._id} 
-                                character={character} 
+                                 character={character} 
                     />);
             if ((index + 1) % 5 === 0) {
                 rows.push(

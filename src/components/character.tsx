@@ -1,59 +1,49 @@
 import { DisneyCharacter } from "../disney_character"
 import React, { useContext } from 'react';
-import { FavoritesContext, FavoritesContextType} from '../App';
+import { FavoritesContext } from '../App';
 
-
-interface CharacterProps {
-  character: DisneyCharacter;
+interface CharacterProps{
+	character: DisneyCharacter;
 }
 
-const Character : React.FC<CharacterProps> = ( { character } ) => {
+const Character : React.FC<CharacterProps> = ( { character }) => {
 
-  const favoritesContext = React.useContext (FavoritesContext);
+  //Information about currently-favorited characters
+	const favoritesContext = useContext(FavoritesContext); 
+  
+  //Handles selection/deselection of favorites
+  function toggleFavoriteForCharacter(selectedFavorite : DisneyCharacter) {
 
+    // Add to Favorites if character is not found in Favorites
+    if (! (favoritesContext?.characterFavorites.find (favorite => 
+      favorite._id === character._id))) {
+        
+        favoritesContext?.setCharacterFavorites([...favoritesContext?.characterFavorites, character]);  
 
-  //set default image if none                                                
-  let imageSrc = "https://picsum.photos/300/200/?blur";   
-  if (character.imageUrl) {imageSrc = character.imageUrl};
+		}
 
-    function toggleFavoriteForCharacter (characterID: number) {
+    // Remove from Favorites
+		else {
+		  
+		  const updatedFavorites = favoritesContext.characterFavorites.filter (favorite =>
+        favorite['_id'] !== character._id);
+     
+		  favoritesContext?.setCharacterFavorites(updatedFavorites);
+		}
+	}
 
-      let updatedFavorites : Array<number> = [];
-
-      //add a new favorite
-      if (!favoritesContext?.characterFavorites.includes(characterID)) {
-        favoritesContext?.setCharacterFavorites ([...favoritesContext.characterFavorites,characterID]);
-      }
-
-    //filter out a removed favorite
-    else {
-      updatedFavorites = 
-      favoritesContext?.characterFavorites.filter((id) => id !== characterID);
-
-      favoritesContext?.setCharacterFavorites(updatedFavorites);
-    }  
-      
-  } 
-
-  {return (
-
-    <article className="character-item">
+    return(<article className="character-item">
 
       <h2>{character.name}</h2>
-
-      <div className="character-item__actions"
-       onClick={()=>
-        toggleFavoriteForCharacter(character._id)}> {
-          !favoritesContext?.characterFavorites.includes(character._id)?
-          "Add to Favourites" : "Favorited"
-        }  
+      
+      <div className="character-item__actions"  onClick={() => toggleFavoriteForCharacter(character)}>
+	  	{!favoritesContext?.characterFavorites.includes(character) ? "Add to Favorites" : "Favorited"}
       </div>
-
+      
       <img className="character-item__img" src={character.imageUrl} alt={character.name} />
+    
+    </article>);
+}
 
-    </article>
-  )  }
-  
-}  
-  
-export default Character
+
+export default Character;

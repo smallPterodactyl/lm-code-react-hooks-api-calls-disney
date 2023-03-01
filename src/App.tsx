@@ -9,20 +9,26 @@ import { DisneyCharacter } from './disney_character';
 
 //Create a single Context to pass to value
 export type FavoritesContextType = {
-  characterFavorites : Array<number>;
-  setCharacterFavorites : React.Dispatch<React.SetStateAction<number[]>>;
+  characterFavorites : Array<DisneyCharacter>;
+  setCharacterFavorites : React.Dispatch<React.SetStateAction<DisneyCharacter[]>>;
 }
 
-//Introduce a null context option to support potential checks against it
 export const FavoritesContext = 
   React.createContext<null | FavoritesContextType>(null)
 
+  
+//Main app starts here
 const App : React.FC = () => {
 
+  //Structures to handle data
   const [characters, setCharacters] = useState<Array<DisneyCharacter>>([]);
-	const [currentPage, setCurrentPage] = useState<number>(1);
-  const [characterFavorites, setCharacterFavorites] = useState<number[]>([]);
+	//const [characterFavorites, setCharacterFavorites] = useState<number[]>([]);
+  const [characterFavorites, setCharacterFavorites] = useState<Array<DisneyCharacter>>([]);
 
+  //Structures to handle navigation
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  
+  //Change page following a state update
   useEffect(() => {
     getCharacters(currentPage);
     }, [currentPage]);
